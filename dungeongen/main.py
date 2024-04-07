@@ -1,8 +1,9 @@
-import random
 import asyncio
 import itertools
-from gate import ERankGate, DRankGate, CRankGate, BRankGate, ARankGate, SRankGate
+import random
+
 from chat import send_prompt
+from gate import ARankGate, BRankGate, CRankGate, DRankGate, ERankGate, SRankGate
 
 
 def display_menu():
