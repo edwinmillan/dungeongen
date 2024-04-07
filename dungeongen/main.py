@@ -89,7 +89,7 @@ def menu_loop():
 
         chat_response = asyncio.run(
             send_prompt_with_spinner(
-                f"Describe the environment without giving your own commentary or analysis. Describe a Solo Leveling gate's environment based on the following encounter data. All the following information should be present in the response: {encounter}"
+                f"Describe the environment without giving your own commentary or analysis. Describe a pocket dimension's environment based on the following encounter data. Don't refer to the pocket dimension in your description. All the following information should be present in the response: {encounter}"
             )
         )
 

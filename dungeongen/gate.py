@@ -1,4 +1,5 @@
 import random
+import asyncio
 from compendium import Compendium
 from pydantic import BaseModel, field_validator
 
@@ -18,12 +19,14 @@ class Gate(BaseModel):
         return value
 
     @property
-    def monster_pool(self) -> dict:
-        return {cr: self.compendium.get_monsters(cr=cr) for cr in self.monster_crs}
+    async def monster_pool(self) -> dict:
+        return {
+            cr: await self.compendium.get_monsters(cr=cr) for cr in self.monster_crs
+        }
 
-    def generate_monsters(self) -> list[dict]:
+    async def generate_monsters(self) -> list[dict]:
         waves = random.choice(range(1, self.wave_die + 1))
-        monster_pool_cache = self.monster_pool
+        monster_pool_cache = await self.monster_pool
         monsters = []
         for wave in range(waves):
             monster_cr = random.choice(self.monster_crs)
@@ -36,15 +39,15 @@ class Gate(BaseModel):
             monsters.append(encounter)
         return monsters
 
-    def generate_boss(self) -> dict:
+    async def generate_boss(self) -> dict:
         boss_cr = random.choice(self.boss_crs)
-        boss_pool = self.compendium.get_monsters(cr=boss_cr)
+        boss_pool = await self.compendium.get_monsters(cr=boss_cr)
         boss = random.choice(boss_pool).name
         return boss
 
     def generate_encounters(self) -> dict:
-        monsters = self.generate_monsters()
-        boss = self.generate_boss()
+        monsters = asyncio.run(self.generate_monsters())
+        boss = asyncio.run(self.generate_boss())
         return {
             "rank": self.rank,
             "monsters": monsters,
