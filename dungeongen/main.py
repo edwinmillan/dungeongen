@@ -1,7 +1,8 @@
 import random
+import asyncio
+import itertools
 from gate import ERankGate, DRankGate, CRankGate, BRankGate, ARankGate, SRankGate
 from chat import send_prompt
-from tqdm import tqdm
 
 
 def display_menu():
@@ -36,6 +37,23 @@ def display_encounter(encounter: dict):
     print(f"Boss: {encounter.get('boss')}")
 
 
+async def spinner_function(description):
+    for char in itertools.cycle(["|", "/", "-", "\\"]):
+        if not asyncio.current_task().cancelled():
+            print(f"\r{description}: {char}", end="", flush=True)
+            await asyncio.sleep(0.1)
+        else:
+            break
+
+
+async def send_prompt_with_spinner(prompt):
+    spinner = asyncio.create_task(spinner_function("Waiting for response"))
+    result = await send_prompt(prompt)
+    spinner.cancel()
+    print(" Done!")
+    return result
+
+
 def menu_loop():
     gates = {
         "E": ERankGate(),
@@ -67,11 +85,14 @@ def menu_loop():
 
         encounter = gate.generate_encounters()
         # print("Encounter generated:", encounter)
-        # display_encounter(encounter)
+        display_encounter(encounter)
 
-        chat_response = send_prompt(
-            f"Describe the environment without giving your own commentary of a Solo Leveling gate based on the following encounter data: {encounter}"
+        chat_response = asyncio.run(
+            send_prompt_with_spinner(
+                f"Describe the environment without giving your own commentary or analysis. Describe a Solo Leveling gate's environment based on the following encounter data. All the following information should be present in the response: {encounter}"
+            )
         )
+
         print(chat_response)
 
 
