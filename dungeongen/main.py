@@ -1,11 +1,91 @@
+import random
 from gate import ERankGate, DRankGate, CRankGate, BRankGate, ARankGate, SRankGate
 
 
+def display_menu():
+
+    print("Please select a gate to generate an encounter:")
+    print("E - E Rank Gate")
+    print("D - D Rank Gate")
+    print("C - C Rank Gate")
+    print("B - B Rank Gate")
+    print("A - A Rank Gate")
+    print("S - S Rank Gate")
+    print("---")
+    print("R - Random Gate")
+    print("H - Display these options again")
+    print("Q - Quit the Dungeon Generator")
+
+
+def display_encounter(encounter: dict):
+    print("Encounter generated:")
+    print(f"Rank: {encounter.get('rank')}")
+
+    monsters = encounter.get("monsters", [])
+    monster_count = sum(map(lambda m: m.get("wave_size"), monsters))
+    wave_count = len(monsters)
+
+    print(f"Monsters: Total: {monster_count}, Waves: {wave_count}")
+
+    for monster in monsters:
+        print(
+            f"  - Wave {monster.get('wave')} {monster.get('monster')} x{monster.get('wave_size')}"
+        )
+    print(f"Boss: {encounter.get('boss')}")
+
+
+def menu_loop():
+    while True:
+        gates = {
+            "E": ERankGate(),
+            "D": DRankGate(),
+            "C": CRankGate(),
+            "B": BRankGate(),
+            "A": ARankGate(),
+            "S": SRankGate(),
+        }
+
+        # Display the menu
+
+        # Get user input
+        gate_choice = input("Enter your choice: ").strip().upper()
+
+        # Generate encounter based on user's choice
+        match gate_choice:
+            case "E":
+                gate = gates["E"]
+            case "D":
+                gate = gates["D"]
+            case "C":
+                gate = gates["C"]
+            case "B":
+                gate = gates["B"]
+            case "A":
+                gate = gates["A"]
+            case "S":
+                gate = gates["S"]
+            case "R":
+                gate = random.choice(list(gates.values()))
+            case "Q":
+                print("Goodbye!")
+                break
+            case "H":
+                display_menu()
+                continue
+            case _:
+                print("Invalid choice. Please try again.")
+                continue
+
+        encounter = gate.generate_encounters()
+        # print("Encounter generated:", encounter)
+        display_encounter(encounter)
+
+
 def main():
-    # egate = ERankGate()
-    dgate = DRankGate()
-    print(dgate)
-    print(dgate.generate_encounters())
+    print("Welcome to the Dungeon Generator!")
+    display_menu()
+    menu_loop()
+    print("Exiting...")
 
 
 if __name__ == "__main__":
