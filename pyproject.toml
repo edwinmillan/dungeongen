@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "dungeongen"
+version = "0.1.0"
+description = ""
+authors = ["Edwin Millan <bassgs3000@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+requests = "^2.31.0"
+yarl = "^1.9.4"
+pydantic = "^2.6.4"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
