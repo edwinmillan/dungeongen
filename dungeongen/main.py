@@ -1,5 +1,7 @@
 import random
 from gate import ERankGate, DRankGate, CRankGate, BRankGate, ARankGate, SRankGate
+from chat import send_prompt
+from tqdm import tqdm
 
 
 def display_menu():
@@ -65,7 +67,12 @@ def menu_loop():
 
         encounter = gate.generate_encounters()
         # print("Encounter generated:", encounter)
-        display_encounter(encounter)
+        # display_encounter(encounter)
+
+        chat_response = send_prompt(
+            f"Describe the environment without giving your own commentary of a Solo Leveling gate based on the following encounter data: {encounter}"
+        )
+        print(chat_response)
 
 
 def main():

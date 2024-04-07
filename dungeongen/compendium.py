@@ -1,7 +1,7 @@
 import requests
 from pydantic import BaseModel, HttpUrl
 from yarl import URL
-from schema.site_model import MonsterResults, Results, Monster
+from schema.dndapi_model import MonsterResults, Results, Monster
 
 
 class Compendium(BaseModel):
