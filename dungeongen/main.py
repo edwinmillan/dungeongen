@@ -35,35 +35,22 @@ def display_encounter(encounter: dict):
 
 
 def menu_loop():
+    gates = {
+        "E": ERankGate(),
+        "D": DRankGate(),
+        "C": CRankGate(),
+        "B": BRankGate(),
+        "A": ARankGate(),
+        "S": SRankGate(),
+    }
     while True:
-        gates = {
-            "E": ERankGate(),
-            "D": DRankGate(),
-            "C": CRankGate(),
-            "B": BRankGate(),
-            "A": ARankGate(),
-            "S": SRankGate(),
-        }
-
-        # Display the menu
-
         # Get user input
         gate_choice = input("Enter your choice: ").strip().upper()
 
         # Generate encounter based on user's choice
         match gate_choice:
-            case "E":
-                gate = gates["E"]
-            case "D":
-                gate = gates["D"]
-            case "C":
-                gate = gates["C"]
-            case "B":
-                gate = gates["B"]
-            case "A":
-                gate = gates["A"]
-            case "S":
-                gate = gates["S"]
+            case "E" | "D" | "C" | "B" | "A" | "S":
+                gate = gates[gate_choice]
             case "R":
                 gate = random.choice(list(gates.values()))
             case "Q":
