@@ -8,7 +8,6 @@ class Compendium(BaseModel):
     base_url: HttpUrl = "https://www.dnd5eapi.co/api"
 
     def _call_api(self, url: URL) -> dict:
-        print(url)
         response = requests.get(url)
         response.raise_for_status()
         return response.json()
