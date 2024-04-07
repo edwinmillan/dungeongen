@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from typing import Optional
 
 
 class ArmorClass(BaseModel):
@@ -25,11 +26,11 @@ class Actions(BaseModel):
 
 
 class Senses(BaseModel):
-    passive_perception: int | None = None
-    blindsight: str | None = None
-    darkvision: str | None = None
-    tremorsense: str | None = None
-    truesight: str | None = None
+    passive_perception: Optional[int] = None
+    blindsight: Optional[str] = None
+    darkvision: Optional[str] = None
+    tremorsense: Optional[str] = None
+    truesight: Optional[str] = None
 
 
 class Results(BaseModel):
