@@ -11,7 +11,7 @@ from gate import ARankGate, BRankGate, CRankGate, DRankGate, ERankGate, SRankGat
 load_dotenv()
 
 
-def display_menu():
+def display_menu(chat_narration: bool) -> None:
 
     print("Please select a gate to generate an encounter:")
     print("E - E Rank Gate")
@@ -22,6 +22,9 @@ def display_menu():
     print("S - S Rank Gate")
     print("---")
     print("R - Random Gate")
+    print(
+        f"N - Toggle chat narration (currently {'enabled' if chat_narration else 'disabled'})"
+    )
     print("H - Display these options again")
     print("Q - Quit the Dungeon Generator")
 
@@ -53,7 +56,7 @@ async def spinner_function(description: str) -> None:
 
 
 async def send_prompt_with_spinner(prompt: str) -> str:
-    spinner = asyncio.create_task(spinner_function("Waiting for response"))
+    spinner = asyncio.create_task(spinner_function("Waiting for Chat response"))
     result = await send_prompt(prompt)
     spinner.cancel()
     print(" Done!")
@@ -85,6 +88,7 @@ def menu_loop():
         "A": ARankGate(compendium=compendium),
         "S": SRankGate(compendium=compendium),
     }
+    display_menu(chat_narration=chat_narration)
     while True:
         # Get user input
         gate_choice = input("Enter your choice: ").strip().upper()
@@ -93,13 +97,19 @@ def menu_loop():
         match gate_choice:
             case "E" | "D" | "C" | "B" | "A" | "S":
                 gate = gates[gate_choice]
+            case "N":
+                chat_narration = not chat_narration
+                print(
+                    f"Chat narration is now {'enabled' if chat_narration else 'disabled'}"
+                )
+                continue
             case "R":
                 gate = random.choice(list(gates.values()))
             case "Q":
                 print("Goodbye!")
                 break
             case "H":
-                display_menu()
+                display_menu(chat_narration=chat_narration)
                 continue
             case _:
                 print("Invalid choice. Please try again.")
@@ -121,7 +131,6 @@ def menu_loop():
 
 def main():
     print("Welcome to the Dungeon Generator!")
-    display_menu()
     menu_loop()
     print("Exiting...")
 
