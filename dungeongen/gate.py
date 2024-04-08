@@ -62,8 +62,8 @@ class ERankGate(Gate):
     wave_die: int = Field(default=6)
     wave_size_die: int = Field(default=12)
 
-    def __init__(self):
-        super().__init__(rank="E")
+    def __init__(self, **kwargs):
+        super().__init__(rank="E", **kwargs)
 
 
 class DRankGate(Gate):
@@ -72,8 +72,8 @@ class DRankGate(Gate):
     wave_die: int = Field(default=8)
     wave_size_die: int = Field(default=16)
 
-    def __init__(self):
-        super().__init__(rank="D")
+    def __init__(self, **kwargs):
+        super().__init__(rank="D", **kwargs)
 
 
 class CRankGate(Gate):
@@ -82,8 +82,8 @@ class CRankGate(Gate):
     wave_die: int = Field(default=10)
     wave_size_die: int = Field(default=20)
 
-    def __init__(self):
-        super().__init__(rank="C")
+    def __init__(self, **kwargs):
+        super().__init__(rank="C", **kwargs)
 
 
 class BRankGate(Gate):
@@ -92,8 +92,8 @@ class BRankGate(Gate):
     wave_die: int = Field(default=12)
     wave_size_die: int = Field(default=24)
 
-    def __init__(self):
-        super().__init__(rank="B")
+    def __init__(self, **kwargs):
+        super().__init__(rank="B", **kwargs)
 
 
 class ARankGate(Gate):
@@ -102,8 +102,8 @@ class ARankGate(Gate):
     wave_die: int = Field(default=14)
     wave_size_die: int = Field(default=28)
 
-    def __init__(self):
-        super().__init__(rank="A")
+    def __init__(self, **kwargs):
+        super().__init__(rank="A", **kwargs)
 
 
 class SRankGate(Gate):
@@ -112,5 +112,5 @@ class SRankGate(Gate):
     wave_die: int = Field(default=40)
     wave_size_die: int = Field(default=100)
 
-    def __init__(self):
-        super().__init__(rank="S")
+    def __init__(self, **kwargs):
+        super().__init__(rank="S", **kwargs)
