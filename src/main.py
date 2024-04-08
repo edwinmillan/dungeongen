@@ -3,10 +3,11 @@ import itertools
 import random
 from os import getenv
 
-from chat import send_prompt
-from compendium import Compendium
 from dotenv import load_dotenv
-from gate import ARankGate, BRankGate, CRankGate, DRankGate, ERankGate, SRankGate
+
+from src.chat import send_prompt
+from src.compendium import Compendium
+from src.gate import ARankGate, BRankGate, CRankGate, DRankGate, ERankGate, SRankGate
 
 load_dotenv()
 

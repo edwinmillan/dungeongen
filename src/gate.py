@@ -1,8 +1,10 @@
-import random
 import asyncio
+import random
 from typing import Optional, Union
-from compendium import Compendium
-from pydantic import BaseModel, field_validator, Field
+
+from pydantic import BaseModel, Field, field_validator
+
+from src.compendium import Compendium
 
 
 class Gate(BaseModel):
