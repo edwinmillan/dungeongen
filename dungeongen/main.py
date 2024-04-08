@@ -1,9 +1,14 @@
 import asyncio
 import itertools
 import random
+from os import getenv
 
 from chat import send_prompt
+from compendium import Compendium
+from dotenv import load_dotenv
 from gate import ARankGate, BRankGate, CRankGate, DRankGate, ERankGate, SRankGate
+
+load_dotenv()
 
 
 def display_menu():
@@ -21,7 +26,7 @@ def display_menu():
     print("Q - Quit the Dungeon Generator")
 
 
-def display_encounter(encounter: dict):
+def display_encounter(encounter: dict) -> None:
     print("Encounter generated:")
     print(f"Rank: {encounter.get('rank')}")
 
@@ -38,7 +43,7 @@ def display_encounter(encounter: dict):
     print(f"Boss: {encounter.get('boss')}")
 
 
-async def spinner_function(description):
+async def spinner_function(description: str) -> None:
     for char in itertools.cycle(["|", "/", "-", "\\"]):
         if not asyncio.current_task().cancelled():
             print(f"\r{description}: {char}", end="", flush=True)
@@ -47,7 +52,7 @@ async def spinner_function(description):
             break
 
 
-async def send_prompt_with_spinner(prompt):
+async def send_prompt_with_spinner(prompt: str) -> str:
     spinner = asyncio.create_task(spinner_function("Waiting for response"))
     result = await send_prompt(prompt)
     spinner.cancel()
@@ -55,14 +60,30 @@ async def send_prompt_with_spinner(prompt):
     return result
 
 
+def parse_boolean(value: str | bool) -> bool:
+    if value is True or value is False:
+        return value
+    elif value.lower() in ("true", "1", "yes"):
+        return True
+    elif value.lower() in ("false", "0", "no"):
+        return False
+    else:
+        raise ValueError(f"Cannot convert {value} to boolean")
+
+
 def menu_loop():
+    base_url = getenv("COMPENDIUM_URL")
+    chat_narration: bool = parse_boolean(getenv("CHAT_NARRATION", False))
+
+    compendium = Compendium(base_url=base_url)
+
     gates = {
-        "E": ERankGate(),
-        "D": DRankGate(),
-        "C": CRankGate(),
-        "B": BRankGate(),
-        "A": ARankGate(),
-        "S": SRankGate(),
+        "E": ERankGate(compendium=compendium),
+        "D": DRankGate(compendium=compendium),
+        "C": CRankGate(compendium=compendium),
+        "B": BRankGate(compendium=compendium),
+        "A": ARankGate(compendium=compendium),
+        "S": SRankGate(compendium=compendium),
     }
     while True:
         # Get user input
@@ -88,13 +109,14 @@ def menu_loop():
         # print("Encounter generated:", encounter)
         display_encounter(encounter)
 
-        chat_response = asyncio.run(
-            send_prompt_with_spinner(
-                f"Describe the environment without giving your own commentary or analysis. Describe a pocket dimension's environment based on the following encounter data. Don't refer to the pocket dimension in your description. All the following information should be present in the response: {encounter}"
+        if chat_narration:
+            chat_response = asyncio.run(
+                send_prompt_with_spinner(
+                    f"Describe the environment without giving your own commentary or analysis. Describe a pocket dimension's environment based on the following encounter data. Don't refer to the pocket dimension in your description. All the following information should be present in the response: {encounter}"
+                )
             )
-        )
 
-        print(chat_response)
+            print(chat_response)
 
 
 def main():
