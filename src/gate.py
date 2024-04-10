@@ -42,7 +42,7 @@ class Gate(BaseModel):
             monsters.append(encounter)
         return monsters
 
-    async def generate_boss(self) -> dict:
+    async def generate_boss(self) -> str:
         boss_cr = random.choice(self.boss_crs)
         boss_pool = await self.compendium.get_monsters(cr=boss_cr)
         boss = random.choice(boss_pool).name
