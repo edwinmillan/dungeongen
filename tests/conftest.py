@@ -119,3 +119,13 @@ def mock_response(monkeypatch):
         return httpx.Response(404, request=mock_request)
 
     monkeypatch.setattr(httpx.AsyncClient, "get", AsyncMock(side_effect=mock_get))
+
+
+@pytest.fixture
+def mock_response_wrong_url(monkeypatch):
+    async def mock_get(*args, **kwargs):
+        mock_request = httpx.Request("GET", "https://www.example.com/")
+        if "example" in args[0]:
+            return httpx.Response(404, request=mock_request)
+
+    monkeypatch.setattr(httpx.AsyncClient, "get", AsyncMock(side_effect=mock_get))
