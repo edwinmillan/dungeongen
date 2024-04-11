@@ -108,7 +108,7 @@ mock_monsters_results = {
 }
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture
 def mock_response(monkeypatch):
     async def mock_get(*args, **kwargs):
         mock_request = httpx.Request("GET", "https://www.dnd5eapi.co/api/monsters")

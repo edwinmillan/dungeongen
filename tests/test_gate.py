@@ -11,7 +11,7 @@ from src.gate import (
     SRankGate,
 )
 from src.schema.dndapi_model import Results
-from tests.mock_data import mock_monster_data
+from tests.conftest import mock_monster_data
 
 
 @pytest.mark.parametrize(
