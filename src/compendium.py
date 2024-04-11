@@ -23,8 +23,11 @@ class Compendium(BaseModel):
         if cr:
             url = url.with_query(challenge_rating=cr)
         result = await self._call_api(url)
-        monsters = MonsterResults(**result)
-        return monsters.results
+        if result:
+            monsters = MonsterResults(**result)
+            return monsters.results
+        else:
+            return []
 
     async def get_monster(self, index: str) -> Monster:
         url = URL(str(self.base_url)) / "monsters" / index
