@@ -1,3 +1,8 @@
+from unittest.mock import AsyncMock
+
+import httpx
+import pytest
+
 mock_monster_data = {
     "index": "goblin",
     "name": "Goblin",
@@ -101,3 +106,16 @@ mock_monsters_results = {
     "count": 32,
     "results": [{"index": "goblin", "name": "Goblin", "url": "/api/monsters/goblin"}],
 }
+
+
+@pytest.fixture(scope="module")
+def mock_response(monkeypatch):
+    async def mock_get(*args, **kwargs):
+        mock_request = httpx.Request("GET", "https://www.dnd5eapi.co/api/monsters")
+        if "monsters" in args[0]:
+            if "/monsters/goblin" in args[0]:
+                return httpx.Response(200, json=mock_monster_data, request=mock_request)
+            return httpx.Response(200, json=mock_monsters_results, request=mock_request)
+        return httpx.Response(404, request=mock_request)
+
+    monkeypatch.setattr(httpx.AsyncClient, "get", AsyncMock(side_effect=mock_get))

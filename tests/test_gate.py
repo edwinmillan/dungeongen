@@ -1,6 +1,3 @@
-from unittest.mock import AsyncMock
-
-import httpx
 import pytest
 from pydantic import ValidationError
 
@@ -14,7 +11,7 @@ from src.gate import (
     SRankGate,
 )
 from src.schema.dndapi_model import Results
-from tests.mock_data import mock_monster_data, mock_monsters_results
+from tests.mock_data import mock_monster_data
 
 
 @pytest.mark.parametrize(
@@ -52,19 +49,6 @@ def test_gate_rank_validation(rank):
 )
 def test_gate_inheritance(gate, rank):
     assert gate.rank == rank
-
-
-@pytest.fixture
-def mock_response(monkeypatch):
-    async def mock_get(*args, **kwargs):
-        mock_request = httpx.Request("GET", "https://www.dnd5eapi.co/api/monsters")
-        if "monsters" in args[0]:
-            if "/monsters/goblin" in args[0]:
-                return httpx.Response(200, json=mock_monster_data, request=mock_request)
-            return httpx.Response(200, json=mock_monsters_results, request=mock_request)
-        return httpx.Response(404, request=mock_request)
-
-    monkeypatch.setattr(httpx.AsyncClient, "get", AsyncMock(side_effect=mock_get))
 
 
 @pytest.mark.asyncio
