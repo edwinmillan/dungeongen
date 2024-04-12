@@ -7,7 +7,15 @@ from dotenv import load_dotenv
 
 from src.chat import send_prompt
 from src.compendium import Compendium
-from src.gate import ARankGate, BRankGate, CRankGate, DRankGate, ERankGate, SRankGate
+from src.gate import (
+    ARankGate,
+    BRankGate,
+    CRankGate,
+    DRankGate,
+    ERankGate,
+    SRankGate,
+    SSRankGate,
+)
 
 load_dotenv()
 
@@ -21,6 +29,7 @@ def display_menu(chat_narration: bool) -> None:
     print("B - B Rank Gate")
     print("A - A Rank Gate")
     print("S - S Rank Gate")
+    print("SS - SS Rank Gate")
     print("---")
     print("R - Random Gate")
     print(
@@ -79,7 +88,10 @@ def menu_loop():
     base_url = getenv("COMPENDIUM_URL")
     chat_narration: bool = parse_boolean(getenv("CHAT_NARRATION", False))
 
-    compendium = Compendium(base_url=base_url)
+    if not base_url:
+        compendium = Compendium()
+    else:
+        compendium = Compendium(base_url=base_url)
 
     gates = {
         "E": ERankGate(compendium=compendium),
@@ -88,6 +100,7 @@ def menu_loop():
         "B": BRankGate(compendium=compendium),
         "A": ARankGate(compendium=compendium),
         "S": SRankGate(compendium=compendium),
+        "SS": SSRankGate(compendium=compendium),
     }
     display_menu(chat_narration=chat_narration)
     while True:
@@ -96,7 +109,7 @@ def menu_loop():
 
         # Generate encounter based on user's choice
         match gate_choice:
-            case "E" | "D" | "C" | "B" | "A" | "S":
+            case "E" | "D" | "C" | "B" | "A" | "S" | "SS":
                 gate = gates[gate_choice]
             case "N":
                 chat_narration = not chat_narration
