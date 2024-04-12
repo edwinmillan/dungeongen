@@ -9,6 +9,7 @@ from src.gate import (
     ERankGate,
     Gate,
     SRankGate,
+    SSRankGate,
 )
 from src.schema.dndapi_model import Results
 from tests.conftest import mock_monster_data
@@ -23,6 +24,7 @@ from tests.conftest import mock_monster_data
         ("B", "B"),
         ("A", "A"),
         ("S", "S"),
+        ("SS", "SS"),
     ],
 )
 def test_gate_rank(rank, expected):
@@ -45,6 +47,7 @@ def test_gate_rank_validation(rank):
         (BRankGate(), "B"),
         (ARankGate(), "A"),
         (SRankGate(), "S"),
+        (SSRankGate(), "SS"),
     ],
 )
 def test_gate_inheritance(gate, rank):
@@ -52,7 +55,7 @@ def test_gate_inheritance(gate, rank):
 
 
 @pytest.mark.asyncio
-async def test_gate_monster_pool(mock_response):
+async def test_gate_monster_pool(mock_dndapi_response):
     gate = ERankGate()
     monster_pool = await gate.monster_pool
     assert list(monster_pool.keys()) == gate.monster_crs
@@ -63,7 +66,7 @@ async def test_gate_monster_pool(mock_response):
 
 
 @pytest.mark.asyncio
-async def test_gate_generate_monsters(mock_response):
+async def test_gate_generate_monsters(mock_dndapi_response):
     gate = ERankGate()
     monsters = await gate.generate_monsters()
     assert monsters[-1]["wave"] == len(monsters)
@@ -73,13 +76,13 @@ async def test_gate_generate_monsters(mock_response):
 
 
 @pytest.mark.asyncio
-async def test_gate_generate_boss(mock_response):
+async def test_gate_generate_boss(mock_dndapi_response):
     gate = ERankGate()
     boss = await gate.generate_boss()
     assert boss == "Goblin"
 
 
-def test_gate_generate_encounters(mock_response):
+def test_gate_generate_encounters(mock_dndapi_response):
     gate = ERankGate()
     encounters = gate.generate_encounters()
     assert encounters["rank"] == "E"
