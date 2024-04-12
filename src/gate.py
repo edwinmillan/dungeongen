@@ -17,7 +17,7 @@ class Gate(BaseModel):
 
     @field_validator("rank")
     def validate_rank(cls, value):
-        valid_ranks = ["E", "D", "C", "B", "A", "S"]
+        valid_ranks = ["E", "D", "C", "B", "A", "S", "SS"]
         assert value in valid_ranks, f"Invalid rank not in {valid_ranks}"
         return value
 
@@ -116,3 +116,13 @@ class SRankGate(Gate):
 
     def __init__(self, **kwargs):
         super().__init__(rank="S", **kwargs)
+
+
+class SSRankGate(Gate):
+    monster_crs: list[int | float] = Field(default=[6, 7, 8])
+    boss_crs: list[int | float] = Field(default=list(range(10, 25)))
+    wave_die: int = Field(default=50)
+    wave_size_die: int = Field(default=200)
+
+    def __init__(self, **kwargs):
+        super().__init__(rank="SS", **kwargs)
