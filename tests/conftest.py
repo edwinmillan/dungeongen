@@ -118,6 +118,8 @@ mock_openrouter_response = {
 
 @pytest.fixture
 def mock_dndapi_response(monkeypatch):
+    """Mock the get method of the httpx.AsyncClient to return a 200 response."""
+
     async def mock_get(*args, **kwargs):
         mock_request = httpx.Request("GET", "https://www.dnd5eapi.co/api/monsters")
         if "monsters" in args[0]:
@@ -131,6 +133,8 @@ def mock_dndapi_response(monkeypatch):
 
 @pytest.fixture
 def mock_dndapi_response_wrong_url(monkeypatch):
+    """Mock the get method of the httpx.AsyncClient to return a 404 response."""
+
     async def mock_get(*args, **kwargs):
         mock_request = httpx.Request("GET", "https://www.example.com/")
         if "example" in args[0]:
@@ -141,6 +145,8 @@ def mock_dndapi_response_wrong_url(monkeypatch):
 
 @pytest.fixture
 def mock_chat_response_post(monkeypatch):
+    """Mock the post method of the httpx.AsyncClient to return a response."""
+
     async def mock_post(*args, **kwargs):
         mock_request = httpx.Request(
             "POST", "https://openrouter.ai/api/v1/chat/completions"
@@ -156,6 +162,8 @@ def mock_chat_response_post(monkeypatch):
 
 @pytest.fixture
 def mock_chat_response_post_wrong_url(monkeypatch):
+    """Mock the post method of the httpx.AsyncClient to return a 404 response."""
+
     async def mock_post(*args, **kwargs):
         mock_request = httpx.Request("POST", "https://www.example.com/")
         return httpx.Response(404, request=mock_request, json={})
