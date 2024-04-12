@@ -73,9 +73,11 @@ async def send_prompt_with_spinner(prompt: str) -> str:
     return result
 
 
-def parse_boolean(value: str | bool) -> bool:
+def parse_boolean(value: str | bool | int) -> bool:
     if value is True or value is False:
         return value
+    elif type(value) is int:
+        return bool(value)
     elif value.lower() in ("true", "1", "yes"):
         return True
     elif value.lower() in ("false", "0", "no"):
