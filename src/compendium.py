@@ -1,3 +1,5 @@
+from typing import Optional
+
 import httpx
 from pydantic import BaseModel, Field, HttpUrl
 from yarl import URL
@@ -6,7 +8,7 @@ from src.schema.dndapi_model import Monster, MonsterResults, Results
 
 
 class Compendium(BaseModel):
-    base_url: HttpUrl = Field(default="https://www.dnd5eapi.co/api")
+    base_url: Optional[HttpUrl] = Field(default="https://www.dnd5eapi.co/api")
 
     async def _call_api(self, url: URL) -> dict:
         try:
