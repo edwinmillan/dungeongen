@@ -107,9 +107,17 @@ mock_monsters_results = {
     "results": [{"index": "goblin", "name": "Goblin", "url": "/api/monsters/goblin"}],
 }
 
+mock_openrouter_response = {
+    "id": "test_id",
+    "choices": [{"message": {"content": "42", "role": "user"}}],
+    "created": 1234567890,
+    "model": "openrouter/auto",
+    "object": "chat.completion",
+}
+
 
 @pytest.fixture
-def mock_response(monkeypatch):
+def mock_dndapi_response(monkeypatch):
     async def mock_get(*args, **kwargs):
         mock_request = httpx.Request("GET", "https://www.dnd5eapi.co/api/monsters")
         if "monsters" in args[0]:
@@ -122,10 +130,34 @@ def mock_response(monkeypatch):
 
 
 @pytest.fixture
-def mock_response_wrong_url(monkeypatch):
+def mock_dndapi_response_wrong_url(monkeypatch):
     async def mock_get(*args, **kwargs):
         mock_request = httpx.Request("GET", "https://www.example.com/")
         if "example" in args[0]:
             return httpx.Response(404, request=mock_request)
 
     monkeypatch.setattr(httpx.AsyncClient, "get", AsyncMock(side_effect=mock_get))
+
+
+@pytest.fixture
+def mock_chat_response_post(monkeypatch):
+    async def mock_post(*args, **kwargs):
+        mock_request = httpx.Request(
+            "POST", "https://openrouter.ai/api/v1/chat/completions"
+        )
+        return httpx.Response(
+            200,
+            json=mock_openrouter_response,
+            request=mock_request,
+        )
+
+    monkeypatch.setattr(httpx.AsyncClient, "post", AsyncMock(side_effect=mock_post))
+
+
+@pytest.fixture
+def mock_chat_response_post_wrong_url(monkeypatch):
+    async def mock_post(*args, **kwargs):
+        mock_request = httpx.Request("POST", "https://www.example.com/")
+        return httpx.Response(404, request=mock_request, json={})
+
+    monkeypatch.setattr(httpx.AsyncClient, "post", AsyncMock(side_effect=mock_post))
