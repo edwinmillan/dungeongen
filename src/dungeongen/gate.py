@@ -4,7 +4,7 @@ from typing import Optional, Union
 
 from pydantic import BaseModel, Field, field_validator
 
-from src.compendium import Compendium
+from src.dungeongen.compendium import Compendium
 
 
 class Gate(BaseModel):

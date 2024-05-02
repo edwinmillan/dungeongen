@@ -1,6 +1,6 @@
 import pytest
 
-from src.compendium import Compendium
+from src.dungeongen.compendium import Compendium
 
 
 @pytest.mark.asyncio

@@ -1,7 +1,7 @@
 import pytest
 from pydantic import ValidationError
 
-from src.gate import (
+from src.dungeongen.gate import (
     ARankGate,
     BRankGate,
     CRankGate,
@@ -11,7 +11,7 @@ from src.gate import (
     SRankGate,
     SSRankGate,
 )
-from src.schema.dndapi_model import Results
+from src.dungeongen.schema.dndapi_model import Results
 from tests.conftest import mock_monster_data
 
 

@@ -2,7 +2,7 @@ import asyncio
 
 import pytest
 
-from src.main import (
+from src.dungeongen.main import (
     display_encounter,
     display_menu,
     parse_boolean,
@@ -89,13 +89,13 @@ async def test_send_prompt_with_spinner(monkeypatch, capsys):
         assert prompt == "prompt"
         return "response"
 
-    monkeypatch.setattr("src.main.send_prompt", mock_send_prompt)
+    monkeypatch.setattr("src.dungeongen.main.send_prompt", mock_send_prompt)
 
     # Mock spinner_function to do nothing
     async def mock_spinner_function(prompt):
         pass
 
-    monkeypatch.setattr("src.main.spinner_function", mock_spinner_function)
+    monkeypatch.setattr("src.dungeongen.main.spinner_function", mock_spinner_function)
 
     result = await send_prompt_with_spinner("prompt")
     assert result == "response"

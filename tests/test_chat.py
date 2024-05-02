@@ -1,6 +1,6 @@
 import pytest
 
-from src.chat import send_prompt
+from src.dungeongen.chat import send_prompt
 
 
 @pytest.mark.asyncio

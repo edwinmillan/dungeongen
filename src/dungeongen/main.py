@@ -5,9 +5,9 @@ from os import getenv
 
 from dotenv import load_dotenv
 
-from src.chat import send_prompt
-from src.compendium import Compendium
-from src.gate import (
+from src.dungeongen.chat import send_prompt
+from src.dungeongen.compendium import Compendium
+from src.dungeongen.gate import (
     ARankGate,
     BRankGate,
     CRankGate,

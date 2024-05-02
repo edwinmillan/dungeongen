@@ -4,7 +4,7 @@ from os import getenv
 import httpx
 from dotenv import load_dotenv
 
-from src.schema.openrouter_model import Response
+from src.dungeongen.schema.openrouter_model import Response
 
 load_dotenv()
 

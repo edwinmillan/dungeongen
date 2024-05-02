@@ -4,7 +4,7 @@ import httpx
 from pydantic import BaseModel, Field, HttpUrl
 from yarl import URL
 
-from src.schema.dndapi_model import Monster, MonsterResults, Results
+from src.dungeongen.schema.dndapi_model import Monster, MonsterResults, Results
 
 
 class Compendium(BaseModel):
